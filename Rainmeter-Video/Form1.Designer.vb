@@ -54,11 +54,16 @@ Partial Class Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(271, 188)
+        Me.ClientSize = New System.Drawing.Size(188, 188)
+        Me.ControlBox = False
         Me.Controls.Add(Me.AxWindowsMediaPlayer1)
         Me.Controls.Add(Me.PictureBox1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "Form1"
+        Me.ShowIcon = False
+        Me.ShowInTaskbar = False
         Me.Text = "Form1"
         CType(Me.AxWindowsMediaPlayer1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()

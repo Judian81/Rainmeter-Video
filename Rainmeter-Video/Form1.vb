@@ -291,6 +291,6 @@ Public Class Form1
         'if the app is minimized then restore it
         If Me.WindowState = FormWindowState.Minimized Then Me.WindowState = FormWindowState.Normal
         'if the app is in the background then bring it to the foreground
-        'e.BringToForeground = False
+        e.BringToForeground = False
     End Sub
 End Class
