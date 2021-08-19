@@ -76,6 +76,9 @@ Partial Class Form1
         '
         Me.PictureBox1.BackColor = System.Drawing.Color.White
         Me.PictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
+        Me.PictureBox1.ErrorImage = Global.Rainmeter_Video.My.Resources.Resources.paintboard_2
+        Me.PictureBox1.Image = Global.Rainmeter_Video.My.Resources.Resources.paintboard
+        Me.PictureBox1.InitialImage = Global.Rainmeter_Video.My.Resources.Resources.paintboard_2
         Me.PictureBox1.Location = New System.Drawing.Point(0, 0)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(188, 188)

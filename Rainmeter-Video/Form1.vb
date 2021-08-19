@@ -17,6 +17,14 @@ Public Class Form1
         Form1.ShowInTaskbar = False
         Owner = Form1
         '------
+
+        Me.PictureBox1.ImageLocation = My.Computer.FileSystem.CurrentDirectory & "\background1.png"
+        Me.PictureBox2.ImageLocation = My.Computer.FileSystem.CurrentDirectory & "\background1.png"
+        Me.PictureBox3.ImageLocation = My.Computer.FileSystem.CurrentDirectory & "\background1.png"
+        Me.PictureBox4.ImageLocation = My.Computer.FileSystem.CurrentDirectory & "\background1.png"
+        Me.PictureBox5.ImageLocation = My.Computer.FileSystem.CurrentDirectory & "\background1.png"
+
+        '--------- picture loaded
         Dim argcount As Integer, url As String, position As Integer, positiontemp As String, duration As String, imagelocation As String
         duration = ""
         argcount = 0
@@ -139,6 +147,17 @@ Public Class Form1
                             Me.PictureBox3.Height = Me.Height / AspectRatio / 2 - 5
                             Me.PictureBox3.Top = Me.Height - Me.PictureBox3.Height
                         End If
+                        If AxWindowsMediaPlayer1.Visible = False Then
+                            Me.PictureBox2.Visible = False
+                            Me.PictureBox3.Visible = False
+                            Me.PictureBox4.Visible = False
+                            Me.PictureBox5.Visible = False
+                        Else
+                            Me.PictureBox2.Visible = True
+                            Me.PictureBox3.Visible = True
+                            Me.PictureBox4.Visible = True
+                            Me.PictureBox5.Visible = True
+                        End If
                     Case 2
                         positiontemp = arg
                         If url = "set position" Then
@@ -184,6 +203,12 @@ Public Class Form1
                                 AxWindowsMediaPlayer1.Ctlcontrols.pause()
                             End If
                         End If
+                    Case 10
+                        Me.PictureBox1.ImageLocation = arg
+                        Me.PictureBox2.ImageLocation = arg
+                        Me.PictureBox3.ImageLocation = arg
+                        Me.PictureBox4.ImageLocation = arg
+                        Me.PictureBox5.ImageLocation = arg
                 End Select
             Next
         End If
@@ -349,6 +374,17 @@ Public Class Form1
                             Me.PictureBox3.Height = Me.Height / AspectRatio / 2 - 5
                             Me.PictureBox3.Top = Me.Height - Me.PictureBox3.Height
                         End If
+                        If AxWindowsMediaPlayer1.Visible = False Then
+                            Me.PictureBox2.Visible = False
+                            Me.PictureBox3.Visible = False
+                            Me.PictureBox4.Visible = False
+                            Me.PictureBox5.Visible = False
+                        Else
+                            Me.PictureBox2.Visible = True
+                            Me.PictureBox3.Visible = True
+                            Me.PictureBox4.Visible = True
+                            Me.PictureBox5.Visible = True
+                        End If
                     Case 2
                         positiontemp = arg
                         If url = "set position" Then
@@ -398,6 +434,12 @@ Public Class Form1
                                 AxWindowsMediaPlayer1.Ctlcontrols.pause()
                             End If
                         End If
+                    Case 10
+                        Me.PictureBox1.ImageLocation = arg
+                        Me.PictureBox2.ImageLocation = arg
+                        Me.PictureBox3.ImageLocation = arg
+                        Me.PictureBox4.ImageLocation = arg
+                        Me.PictureBox5.ImageLocation = arg
                 End Select
             Next
         End If
