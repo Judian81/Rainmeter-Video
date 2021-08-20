@@ -3,6 +3,7 @@ Imports System.Drawing.Imaging
 
 Public Class Form1
     Private playstate As String
+    Private playposition As String = "0:00"
 
     Private Sub Form1_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
         RemoveHandler My.Application.StartupNextInstance, AddressOf Me_StartupNextInstance
@@ -13,9 +14,10 @@ Public Class Form1
         '------
         'get rid of the alt+tab row
         ShowInTaskbar = False
-        Dim Form1 As New Form()
-        Form1.FormBorderStyle = FormBorderStyle.FixedToolWindow
-        Form1.ShowInTaskbar = False
+        Dim Form1 As New Form With {
+            .FormBorderStyle = FormBorderStyle.FixedToolWindow,
+            .ShowInTaskbar = False
+        }
         Owner = Form1
         '------
 
@@ -192,15 +194,8 @@ Public Class Form1
                             End If
                         End If
                         If AxWindowsMediaPlayer1.Visible = False Then
-                            Me.PictureBox2.Visible = False
-                            Me.PictureBox3.Visible = False
-                            Me.PictureBox4.Visible = False
-                            Me.PictureBox5.Visible = False
+                            Call SizePictures(False)
                         Else
-                            Me.PictureBox2.Visible = True
-                            Me.PictureBox3.Visible = True
-                            Me.PictureBox4.Visible = True
-                            Me.PictureBox5.Visible = True
                             Call SizePictures(True)
                         End If
                     Case 2
@@ -236,18 +231,28 @@ Public Class Form1
                             Me.PictureBox1.ImageLocation = imagelocation
                         End If
                     Case 9
-                        duration = arg
-                        If url <> "set position" Then
-                            If (playstate = "Play.png" Or playstate = "Next.png" Or playstate = "Previous.png") And duration <> "0:00" And duration <> "" Then
-                                AxWindowsMediaPlayer1.URL = url
-                                AxWindowsMediaPlayer1.Ctlcontrols.currentPosition = position
-                                AxWindowsMediaPlayer1.Ctlcontrols.play()
-                            ElseIf playstate = "Stop.png" Then
-                                AxWindowsMediaPlayer1.Ctlcontrols.stop()
-                            ElseIf duration <> "" Or playstate = "Pause.png" Then
-                                AxWindowsMediaPlayer1.Ctlcontrols.pause()
+                        If arg <> "" Then
+                            duration = arg
+                            If url <> "set position" Then
+                                If duration = "0:00" Then
+                                    AxWindowsMediaPlayer1.Ctlcontrols.stop()
+                                    Me.Timer1.Enabled = False
+                                ElseIf playstate = "Play.png" Then
+                                    AxWindowsMediaPlayer1.URL = url
+                                    AxWindowsMediaPlayer1.Ctlcontrols.currentPosition = position
+                                    AxWindowsMediaPlayer1.Ctlcontrols.play()
+                                    Timer1.Enabled = True
+                                ElseIf playstate = "Stop.png" Then
+                                    AxWindowsMediaPlayer1.Ctlcontrols.stop()
+                                    Me.Timer1.Enabled = False
+                                ElseIf playstate = "Pause.png" Then
+                                    AxWindowsMediaPlayer1.Ctlcontrols.pause()
+                                End If
                             End If
                         End If
+                    Case 10
+                        'use this for syncing
+                        playposition = arg
                 End Select
             Next
         End If
@@ -309,6 +314,10 @@ Public Class Form1
                         url = arg
                         If url = "set position" Then
                             'do not a thing
+                        ElseIf url = "sync position" Then
+                            'do not a thing
+                        ElseIf url = "sync new song" Then
+                            Timer1.Enabled = True
                         ElseIf Strings.Right(url, 4) = ".3gp" Then
                             AxWindowsMediaPlayer1.Visible = False
                         ElseIf Strings.Right(url, 3) = ".aa" Then
@@ -462,18 +471,11 @@ Public Class Form1
                             If Me.PictureBox5.Width = 0 Then
                                 Me.PictureBox5.Width = 1
                             End If
-                        End If
-                        If AxWindowsMediaPlayer1.Visible = False Then
-                            Me.PictureBox2.Visible = False
-                            Me.PictureBox3.Visible = False
-                            Me.PictureBox4.Visible = False
-                            Me.PictureBox5.Visible = False
-                        Else
-                            Me.PictureBox2.Visible = True
-                            Me.PictureBox3.Visible = True
-                            Me.PictureBox4.Visible = True
-                            Me.PictureBox5.Visible = True
-                            Call SizePictures(True)
+                            If AxWindowsMediaPlayer1.Visible = False Then
+                                Call SizePictures(False)
+                            Else
+                                Call SizePictures(True)
+                            End If
                         End If
                     Case 2
                         positiontemp = arg
@@ -483,19 +485,27 @@ Public Class Form1
                             position = Split(positiontemp, ":")(0) * 60 + Split(positiontemp, ":")(1)
                         End If
                     Case 3
-                        videoleft = CInt(Val(arg))
-                        Me.Left = videoleft
-                        AxWindowsMediaPlayer1.Left = 0
+                        If arg <> "" Then
+                            videoleft = CInt(Val(arg))
+                            Me.Left = videoleft
+                            AxWindowsMediaPlayer1.Left = 0
+                        End If
                     Case 4
-                        videotop = CInt(Val(arg))
-                        Me.Top = videotop
-                        AxWindowsMediaPlayer1.Top = 0
+                        If arg <> "" Then
+                            videotop = CInt(Val(arg))
+                            Me.Top = videotop
+                            AxWindowsMediaPlayer1.Top = 0
+                        End If
                     Case 5
-                        Me.Width = CInt(Val(arg))
-                        AxWindowsMediaPlayer1.Width = Me.Width
+                        If arg <> "" Then
+                            Me.Width = CInt(Val(arg))
+                            AxWindowsMediaPlayer1.Width = Me.Width
+                        End If
                     Case 6
-                        Me.Height = CInt(Val(arg))
-                        AxWindowsMediaPlayer1.Height = Me.Height
+                        If arg <> "" Then
+                            Me.Height = CInt(Val(arg))
+                            AxWindowsMediaPlayer1.Height = Me.Height
+                        End If
                     Case 7
                         If arg = "Pause.png" And playstate = "Pause.png" Then
                             playstate = "Play.png"
@@ -503,27 +513,37 @@ Public Class Form1
                             playstate = arg
                         End If
                     Case 8
-                        imagelocation = arg
-                        If url = "set position" Then
-                            'do not a thing
-                        ElseIf imagelocation <> "" Then
-                            Me.PictureBox1.ImageLocation = imagelocation
-                        End If
-                    Case 9
-                        duration = arg
-                        If url <> "set position" Then
-                            If duration = "0:00" Then
-                                AxWindowsMediaPlayer1.Ctlcontrols.stop()
-                            ElseIf playstate = "Play.png" Then
-                                AxWindowsMediaPlayer1.URL = url
-                                AxWindowsMediaPlayer1.Ctlcontrols.currentPosition = position
-                                AxWindowsMediaPlayer1.Ctlcontrols.play()
-                            ElseIf playstate = "Stop.png" Then
-                                AxWindowsMediaPlayer1.Ctlcontrols.stop()
-                            ElseIf playstate = "Pause.png" Then
-                                AxWindowsMediaPlayer1.Ctlcontrols.pause()
+                        If arg <> "" Then
+                            imagelocation = arg
+                            If url = "set position" Then
+                                'do not a thing
+                            ElseIf imagelocation <> "" Then
+                                Me.PictureBox1.ImageLocation = imagelocation
                             End If
                         End If
+                    Case 9
+                        If arg <> "" Then
+                            duration = arg
+                            If url <> "set position" Then
+                                If duration = "0:00" Then
+                                    AxWindowsMediaPlayer1.Ctlcontrols.stop()
+                                    Me.Timer1.Enabled = False
+                                ElseIf playstate = "Play.png" Then
+                                    AxWindowsMediaPlayer1.URL = url
+                                    AxWindowsMediaPlayer1.Ctlcontrols.currentPosition = position
+                                    AxWindowsMediaPlayer1.Ctlcontrols.play()
+                                    Timer1.Enabled = True
+                                ElseIf playstate = "Stop.png" Then
+                                    AxWindowsMediaPlayer1.Ctlcontrols.stop()
+                                    Me.Timer1.Enabled = False
+                                ElseIf playstate = "Pause.png" Then
+                                    AxWindowsMediaPlayer1.Ctlcontrols.pause()
+                                End If
+                            End If
+                        End If
+                    Case 10
+                        'use this for syncing
+                        playposition = arg
                 End Select
             Next
         End If
@@ -565,7 +585,7 @@ Public Class Form1
             bmp = New Bitmap(Me.PictureBox3.ClientSize.Width, Me.PictureBox3.ClientSize.Height)
             Using g As Graphics = Graphics.FromImage(bmp)
                 g.Clear(Me.PictureBox3.BackColor)
-                g.DrawImage(pbImage, -17, -335, 220, 491)
+                g.DrawImage(pbImage, -17, -333, 220, 491)
             End Using
             Me.PictureBox3.Image = bmp
             pbImage = New Bitmap(My.Computer.FileSystem.CurrentDirectory & "\background1.png")
@@ -597,5 +617,16 @@ Public Class Form1
     Private Sub Form1_Shown(sender As Object, e As EventArgs) Handles Me.Shown
         Call SizePictures(True)
         Me.PictureBox1.Visible = True
+    End Sub
+
+    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
+        Static timerunning As Integer
+        timerunning += 1
+        Me.Label3.Text = timerunning
+        Me.Label1.Text = AxWindowsMediaPlayer1.Ctlcontrols.currentPosition
+        If AxWindowsMediaPlayer1.Ctlcontrols.currentPosition >= 0.499 Then
+            AxWindowsMediaPlayer1.Ctlcontrols.currentPosition = 1.6
+            Timer1.Enabled = False
+        End If
     End Sub
 End Class
