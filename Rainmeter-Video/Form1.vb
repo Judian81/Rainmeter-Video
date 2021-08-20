@@ -1,4 +1,5 @@
 ﻿Imports Microsoft.VisualBasic.ApplicationServices
+Imports System.Drawing.Imaging
 
 Public Class Form1
     Private playstate As String
@@ -18,13 +19,6 @@ Public Class Form1
         Owner = Form1
         '------
 
-        Me.PictureBox1.ImageLocation = My.Computer.FileSystem.CurrentDirectory & "\background1.png"
-        Me.PictureBox2.ImageLocation = My.Computer.FileSystem.CurrentDirectory & "\background1.png"
-        Me.PictureBox3.ImageLocation = My.Computer.FileSystem.CurrentDirectory & "\background1.png"
-        Me.PictureBox4.ImageLocation = My.Computer.FileSystem.CurrentDirectory & "\background1.png"
-        Me.PictureBox5.ImageLocation = My.Computer.FileSystem.CurrentDirectory & "\background1.png"
-
-        '--------- picture loaded
         Dim argcount As Integer, url As String, position As Integer, positiontemp As String, duration As String, imagelocation As String
         duration = ""
         argcount = 0
@@ -131,21 +125,71 @@ Public Class Form1
                             AxWindowsMediaPlayer1.Visible = False
                         ElseIf url <> "" Then
                             AxWindowsMediaPlayer1.Visible = True
-                            Dim shell As New Shell32.Shell
-                            Dim objFolder As Shell32.Folder
-                            Dim objFile As Shell32.FolderItem
+                            Dim shell As New Shell32.Shell, objFolder As Shell32.Folder, objFile As Shell32.FolderItem
                             Dim FileNameFromUrl As String = FileName(url)
                             Dim FolderLocationFromUrl As String = PathName(url)
-                            Dim Width As Integer, Height As Integer, AspectRatio As Integer
+                            Dim Width As Integer, Height As Integer, AspectRatio As Double, NewWidth As Double, NewHeight As Double
                             objFolder = shell.NameSpace(FolderLocationFromUrl)
                             objFile = objFolder.Items.Item(FileNameFromUrl)
                             Height = objFolder.GetDetailsOf(objFile, 314)
                             Width = objFolder.GetDetailsOf(objFile, 316)
+
                             AspectRatio = Width / Height
-                            Me.PictureBox2.Height = Me.Height / AspectRatio / 2 - 5
-                            Me.PictureBox3.Top = 0
-                            Me.PictureBox3.Height = Me.Height / AspectRatio / 2 - 5
+                            If Width > Height And Width >= 188 Then
+                                NewWidth = 188
+                                NewHeight = 188 / AspectRatio
+                            ElseIf Height > Width And Height >= 188 Then
+                                NewWidth = 188 / AspectRatio
+                                NewHeight = 188
+                            End If
+
+                            'top location
+                            Me.PictureBox2.Top = 0
+                            Me.PictureBox2.Left = 0
+                            Me.PictureBox2.Width = Me.Width
+                            Me.PictureBox2.Height = ((Me.Height - NewHeight) / 2)
+                            If Me.PictureBox2.Height = 0 Then
+                                Me.PictureBox2.Height = 1
+                            End If
+                            If Me.PictureBox2.Width = 0 Then
+                                Me.PictureBox2.Width = 1
+                            End If
+
+                            'bottom locationb
+                            Me.PictureBox3.Left = 0
+                            Me.PictureBox3.Width = Me.Width
+                            Me.PictureBox3.Height = ((Me.Height - NewHeight) / 2)
                             Me.PictureBox3.Top = Me.Height - Me.PictureBox3.Height
+                            If Me.PictureBox3.Height = 0 Then
+                                Me.PictureBox3.Height = 1
+                            End If
+                            If Me.PictureBox3.Width = 0 Then
+                                Me.PictureBox3.Width = 1
+                            End If
+
+                            'left side
+                            Me.PictureBox4.Top = 0
+                            Me.PictureBox4.Left = 0
+                            Me.PictureBox4.Height = Me.Height
+                            Me.PictureBox4.Width = ((Me.Width - NewWidth) / 2)
+                            If Me.PictureBox4.Height = 0 Then
+                                Me.PictureBox4.Height = 1
+                            End If
+                            If Me.PictureBox4.Width = 0 Then
+                                Me.PictureBox4.Width = 1
+                            End If
+
+                            'right side
+                            Me.PictureBox5.Top = 0
+                            Me.PictureBox5.Height = Me.Height
+                            Me.PictureBox5.Width = ((Me.Width - NewWidth) / 2)
+                            Me.PictureBox5.Left = Me.Height - Me.PictureBox5.Width
+                            If Me.PictureBox5.Height = 0 Then
+                                Me.PictureBox5.Height = 1
+                            End If
+                            If Me.PictureBox5.Width = 0 Then
+                                Me.PictureBox5.Width = 1
+                            End If
                         End If
                         If AxWindowsMediaPlayer1.Visible = False Then
                             Me.PictureBox2.Visible = False
@@ -157,6 +201,7 @@ Public Class Form1
                             Me.PictureBox3.Visible = True
                             Me.PictureBox4.Visible = True
                             Me.PictureBox5.Visible = True
+                            Call SizePictures(True)
                         End If
                     Case 2
                         positiontemp = arg
@@ -203,12 +248,6 @@ Public Class Form1
                                 AxWindowsMediaPlayer1.Ctlcontrols.pause()
                             End If
                         End If
-                    Case 10
-                        Me.PictureBox1.ImageLocation = arg
-                        Me.PictureBox2.ImageLocation = arg
-                        Me.PictureBox3.ImageLocation = arg
-                        Me.PictureBox4.ImageLocation = arg
-                        Me.PictureBox5.ImageLocation = arg
                 End Select
             Next
         End If
@@ -235,13 +274,13 @@ Public Class Form1
     Function FileName(vZ As String) As String
         Dim vA As Integer, sFileName As String
         sFileName = ""
-        For vA = Len(vZ) To 1 Step -1
-            'first we have to find the extension and remove it from the string
-            'If Mid(vZ, vA, 1) = "." Then
-            'sFileName = Microsoft.VisualBasic.Left(vZ, vA - 1)
-            'Exit For
-            'End If
-        Next vA
+        'For vA = Len(vZ) To 1 Step -1
+        '    'first we have to find the extension and remove it from the string
+        '    'If Mid(vZ, vA, 1) = "." Then
+        '    'sFileName = Microsoft.VisualBasic.Left(vZ, vA - 1)
+        '    'Exit For
+        '    'End If
+        'Next vA
         If sFileName = "" Then
             sFileName = vZ
         End If
@@ -358,21 +397,71 @@ Public Class Form1
                             AxWindowsMediaPlayer1.Visible = False
                         ElseIf url <> "" Then
                             AxWindowsMediaPlayer1.Visible = True
-                            Dim shell As New Shell32.Shell
-                            Dim objFolder As Shell32.Folder
-                            Dim objFile As Shell32.FolderItem
+                            Dim shell As New Shell32.Shell, objFolder As Shell32.Folder, objFile As Shell32.FolderItem
                             Dim FileNameFromUrl As String = FileName(url)
                             Dim FolderLocationFromUrl As String = PathName(url)
-                            Dim Width As Integer, Height As Integer, AspectRatio As Integer
+                            Dim Width As Integer, Height As Integer, AspectRatio As Double, NewWidth As Double, NewHeight As Double
                             objFolder = shell.NameSpace(FolderLocationFromUrl)
                             objFile = objFolder.Items.Item(FileNameFromUrl)
                             Height = objFolder.GetDetailsOf(objFile, 314)
                             Width = objFolder.GetDetailsOf(objFile, 316)
+
                             AspectRatio = Width / Height
-                            Me.PictureBox2.Height = Me.Height / AspectRatio / 2 - 5
-                            Me.PictureBox3.Top = 0
-                            Me.PictureBox3.Height = Me.Height / AspectRatio / 2 - 5
+                            If Width > Height And Width >= 188 Then
+                                NewWidth = 188
+                                NewHeight = 188 / AspectRatio
+                            ElseIf Height > Width And Height >= 188 Then
+                                NewWidth = 188 / AspectRatio
+                                NewHeight = 188
+                            End If
+
+                            'top location
+                            Me.PictureBox2.Top = 0
+                            Me.PictureBox2.Left = 0
+                            Me.PictureBox2.Width = Me.Width
+                            Me.PictureBox2.Height = ((Me.Height - NewHeight) / 2)
+                            If Me.PictureBox2.Height = 0 Then
+                                Me.PictureBox2.Height = 1
+                            End If
+                            If Me.PictureBox2.Width = 0 Then
+                                Me.PictureBox2.Width = 1
+                            End If
+
+                            'bottom locationb
+                            Me.PictureBox3.Left = 0
+                            Me.PictureBox3.Width = Me.Width
+                            Me.PictureBox3.Height = ((Me.Height - NewHeight) / 2)
                             Me.PictureBox3.Top = Me.Height - Me.PictureBox3.Height
+                            If Me.PictureBox3.Height = 0 Then
+                                Me.PictureBox3.Height = 1
+                            End If
+                            If Me.PictureBox3.Width = 0 Then
+                                Me.PictureBox3.Width = 1
+                            End If
+
+                            'left side
+                            Me.PictureBox4.Top = 0
+                            Me.PictureBox4.Left = 0
+                            Me.PictureBox4.Height = Me.Height
+                            Me.PictureBox4.Width = ((Me.Width - NewWidth) / 2)
+                            If Me.PictureBox4.Height = 0 Then
+                                Me.PictureBox4.Height = 1
+                            End If
+                            If Me.PictureBox4.Width = 0 Then
+                                Me.PictureBox4.Width = 1
+                            End If
+
+                            'right side
+                            Me.PictureBox5.Top = 0
+                            Me.PictureBox5.Height = Me.Height
+                            Me.PictureBox5.Width = ((Me.Width - NewWidth) / 2)
+                            Me.PictureBox5.Left = Me.Height - Me.PictureBox5.Width
+                            If Me.PictureBox5.Height = 0 Then
+                                Me.PictureBox5.Height = 1
+                            End If
+                            If Me.PictureBox5.Width = 0 Then
+                                Me.PictureBox5.Width = 1
+                            End If
                         End If
                         If AxWindowsMediaPlayer1.Visible = False Then
                             Me.PictureBox2.Visible = False
@@ -384,6 +473,7 @@ Public Class Form1
                             Me.PictureBox3.Visible = True
                             Me.PictureBox4.Visible = True
                             Me.PictureBox5.Visible = True
+                            Call SizePictures(True)
                         End If
                     Case 2
                         positiontemp = arg
@@ -434,12 +524,6 @@ Public Class Form1
                                 AxWindowsMediaPlayer1.Ctlcontrols.pause()
                             End If
                         End If
-                    Case 10
-                        Me.PictureBox1.ImageLocation = arg
-                        Me.PictureBox2.ImageLocation = arg
-                        Me.PictureBox3.ImageLocation = arg
-                        Me.PictureBox4.ImageLocation = arg
-                        Me.PictureBox5.ImageLocation = arg
                 End Select
             Next
         End If
@@ -448,30 +532,70 @@ Public Class Form1
     End Sub
 
     Private Sub Form1_Resize(sender As Object, e As EventArgs) Handles Me.Resize
-        Me.PictureBox1.Left = 0
-        Me.PictureBox1.Top = 0
-        Me.PictureBox1.Width = Me.Width
-        Me.PictureBox1.Height = Me.Height
-        Me.PictureBox2.Top = 0
-        Me.PictureBox2.Width = Me.Width
-        Me.PictureBox3.Width = Me.Width
-        Me.PictureBox4.Top = 0
-        Me.PictureBox4.Left = 0
-        Me.PictureBox4.Height = Me.Height
-        Me.PictureBox5.Top = 0
-        Me.PictureBox5.Left = Me.Width - Me.PictureBox5.Width
-        Me.PictureBox5.Height = Me.Height
-        AxWindowsMediaPlayer1.Left = 0
-        AxWindowsMediaPlayer1.Top = 0
-        AxWindowsMediaPlayer1.Width = Me.Width
-        AxWindowsMediaPlayer1.Height = Me.Height
+        'Me.PictureBox1.Left = 0
+        'Me.PictureBox1.Top = 0
+        'Me.PictureBox1.Width = Me.Width
+        'Me.PictureBox1.Height = Me.Height
+        'Me.PictureBox2.Top = 0
+        'Me.PictureBox2.Width = Me.Width
+        'Me.PictureBox3.Width = Me.Width
+        'Me.PictureBox4.Top = 0
+        'Me.PictureBox4.Left = 0
+        'Me.PictureBox4.Height = Me.Height
+        'Me.PictureBox5.Top = 0
+        'Me.PictureBox5.Left = Me.Width - Me.PictureBox5.Width
+        'Me.PictureBox5.Height = Me.Height
+        'AxWindowsMediaPlayer1.Left = 0
+        'AxWindowsMediaPlayer1.Top = 0
+        'AxWindowsMediaPlayer1.Width = Me.Width
+        'AxWindowsMediaPlayer1.Height = Me.Height
     End Sub
 
-    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
-
+    Private Sub SizePictures(sValue As Boolean)
+        If sValue = True Then
+            System.Windows.Forms.Application.DoEvents()
+            Dim pbImage As New Bitmap(My.Computer.FileSystem.CurrentDirectory & "\background1.png")
+            Dim bmp = New Bitmap(Me.PictureBox2.ClientSize.Width, Me.PictureBox2.ClientSize.Height)
+            Using g As Graphics = Graphics.FromImage(bmp)
+                g.Clear(Me.PictureBox2.BackColor)
+                g.DrawImage(pbImage, -17, -186, 220, 491)
+            End Using
+            Me.PictureBox2.Image = bmp
+            pbImage = New Bitmap(My.Computer.FileSystem.CurrentDirectory & "\background1.png")
+            bmp = New Bitmap(Me.PictureBox3.ClientSize.Width, Me.PictureBox3.ClientSize.Height)
+            Using g As Graphics = Graphics.FromImage(bmp)
+                g.Clear(Me.PictureBox3.BackColor)
+                g.DrawImage(pbImage, -17, -335, 220, 491)
+            End Using
+            Me.PictureBox3.Image = bmp
+            pbImage = New Bitmap(My.Computer.FileSystem.CurrentDirectory & "\background1.png")
+            bmp = New Bitmap(Me.PictureBox4.ClientSize.Width, Me.PictureBox4.ClientSize.Height)
+            Using g As Graphics = Graphics.FromImage(bmp)
+                g.Clear(Me.PictureBox4.BackColor)
+                g.DrawImage(pbImage, -17, -186, 220, 491)
+            End Using
+            Me.PictureBox4.Image = bmp
+            pbImage = New Bitmap(My.Computer.FileSystem.CurrentDirectory & "\background1.png")
+            bmp = New Bitmap(Me.PictureBox5.ClientSize.Width, Me.PictureBox5.ClientSize.Height)
+            Using g As Graphics = Graphics.FromImage(bmp)
+                g.Clear(Me.PictureBox5.BackColor)
+                g.DrawImage(pbImage, -17, -186, 220, 491)
+            End Using
+            Me.PictureBox5.Image = bmp
+            Me.PictureBox2.Visible = True
+            Me.PictureBox3.Visible = True
+            Me.PictureBox4.Visible = True
+            Me.PictureBox5.Visible = True
+        ElseIf sValue = False Then
+            Me.PictureBox2.Visible = False
+            Me.PictureBox3.Visible = False
+            Me.PictureBox4.Visible = False
+            Me.PictureBox5.Visible = False
+        End If
     End Sub
 
-    Private Sub AxWindowsMediaPlayer1_Enter(sender As Object, e As EventArgs) Handles AxWindowsMediaPlayer1.Enter
-
+    Private Sub Form1_Shown(sender As Object, e As EventArgs) Handles Me.Shown
+        Call SizePictures(True)
+        Me.PictureBox1.Visible = True
     End Sub
 End Class

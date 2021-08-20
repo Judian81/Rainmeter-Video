@@ -185,5 +185,8 @@
   <ItemGroup>
     <None Include="Resources\paintboard 2.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\background1.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

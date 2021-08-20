@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class Form1
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class Form1
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
         Me.AxWindowsMediaPlayer1 = New AxWMPLib.AxWindowsMediaPlayer()
@@ -47,11 +47,11 @@ Partial Class Form1
         Me.AxWindowsMediaPlayer1.Size = New System.Drawing.Size(188, 188)
         Me.AxWindowsMediaPlayer1.TabIndex = 0
         Me.AxWindowsMediaPlayer1.TabStop = False
+        Me.AxWindowsMediaPlayer1.Visible = False
         '
         'PictureBox3
         '
-        Me.PictureBox3.BackColor = System.Drawing.Color.FromArgb(CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer))
-        Me.PictureBox3.BackgroundImage = Global.Rainmeter_Video.My.Resources.Resources.paintboard_2
+        Me.PictureBox3.BackColor = System.Drawing.Color.Black
         Me.PictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
         Me.PictureBox3.Location = New System.Drawing.Point(0, 178)
         Me.PictureBox3.Margin = New System.Windows.Forms.Padding(0)
@@ -59,11 +59,11 @@ Partial Class Form1
         Me.PictureBox3.Size = New System.Drawing.Size(188, 10)
         Me.PictureBox3.TabIndex = 13
         Me.PictureBox3.TabStop = False
+        Me.PictureBox3.Visible = False
         '
         'PictureBox2
         '
-        Me.PictureBox2.BackColor = System.Drawing.Color.FromArgb(CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer))
-        Me.PictureBox2.BackgroundImage = Global.Rainmeter_Video.My.Resources.Resources.paintboard_2
+        Me.PictureBox2.BackColor = System.Drawing.Color.Black
         Me.PictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
         Me.PictureBox2.Location = New System.Drawing.Point(0, 0)
         Me.PictureBox2.Margin = New System.Windows.Forms.Padding(0)
@@ -71,25 +71,25 @@ Partial Class Form1
         Me.PictureBox2.Size = New System.Drawing.Size(188, 10)
         Me.PictureBox2.TabIndex = 12
         Me.PictureBox2.TabStop = False
+        Me.PictureBox2.Visible = False
         '
         'PictureBox1
         '
-        Me.PictureBox1.BackColor = System.Drawing.Color.White
+        Me.PictureBox1.BackColor = System.Drawing.Color.Gray
         Me.PictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
-        Me.PictureBox1.ErrorImage = Global.Rainmeter_Video.My.Resources.Resources.paintboard_2
-        Me.PictureBox1.Image = Global.Rainmeter_Video.My.Resources.Resources.paintboard
-        Me.PictureBox1.InitialImage = Global.Rainmeter_Video.My.Resources.Resources.paintboard_2
+        Me.PictureBox1.ErrorImage = Nothing
+        Me.PictureBox1.InitialImage = Nothing
         Me.PictureBox1.Location = New System.Drawing.Point(0, 0)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(188, 188)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox1.TabIndex = 11
         Me.PictureBox1.TabStop = False
+        Me.PictureBox1.Visible = False
         '
         'PictureBox4
         '
-        Me.PictureBox4.BackColor = System.Drawing.Color.FromArgb(CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer))
-        Me.PictureBox4.BackgroundImage = Global.Rainmeter_Video.My.Resources.Resources.paintboard_2
+        Me.PictureBox4.BackColor = System.Drawing.Color.Black
         Me.PictureBox4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
         Me.PictureBox4.Location = New System.Drawing.Point(0, 0)
         Me.PictureBox4.Margin = New System.Windows.Forms.Padding(0)
@@ -97,11 +97,11 @@ Partial Class Form1
         Me.PictureBox4.Size = New System.Drawing.Size(2, 188)
         Me.PictureBox4.TabIndex = 14
         Me.PictureBox4.TabStop = False
+        Me.PictureBox4.Visible = False
         '
         'PictureBox5
         '
-        Me.PictureBox5.BackColor = System.Drawing.Color.FromArgb(CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer))
-        Me.PictureBox5.BackgroundImage = Global.Rainmeter_Video.My.Resources.Resources.paintboard_2
+        Me.PictureBox5.BackColor = System.Drawing.Color.Black
         Me.PictureBox5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
         Me.PictureBox5.Location = New System.Drawing.Point(186, 0)
         Me.PictureBox5.Margin = New System.Windows.Forms.Padding(0)
@@ -109,17 +109,19 @@ Partial Class Form1
         Me.PictureBox5.Size = New System.Drawing.Size(2, 188)
         Me.PictureBox5.TabIndex = 15
         Me.PictureBox5.TabStop = False
+        Me.PictureBox5.Visible = False
         '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.BackColor = System.Drawing.Color.Black
         Me.ClientSize = New System.Drawing.Size(188, 188)
         Me.ControlBox = False
+        Me.Controls.Add(Me.PictureBox2)
         Me.Controls.Add(Me.PictureBox5)
         Me.Controls.Add(Me.PictureBox4)
         Me.Controls.Add(Me.PictureBox3)
-        Me.Controls.Add(Me.PictureBox2)
         Me.Controls.Add(Me.AxWindowsMediaPlayer1)
         Me.Controls.Add(Me.PictureBox1)
         Me.Enabled = False
