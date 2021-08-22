@@ -32,7 +32,6 @@ Partial Class Form1
         Me.PictureBox5 = New System.Windows.Forms.PictureBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        Me.Label2 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
         CType(Me.AxWindowsMediaPlayer1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -80,7 +79,7 @@ Partial Class Form1
         '
         'PictureBox1
         '
-        Me.PictureBox1.BackColor = System.Drawing.Color.Gray
+        Me.PictureBox1.BackColor = System.Drawing.Color.Black
         Me.PictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
         Me.PictureBox1.ErrorImage = Nothing
         Me.PictureBox1.InitialImage = Nothing
@@ -126,31 +125,22 @@ Partial Class Form1
         Me.Label1.Size = New System.Drawing.Size(35, 13)
         Me.Label1.TabIndex = 16
         Me.Label1.Text = "label1"
+        Me.Label1.Visible = False
         '
         'Timer1
         '
         Me.Timer1.Enabled = True
         Me.Timer1.Interval = 10
         '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.BackColor = System.Drawing.Color.DimGray
-        Me.Label2.ForeColor = System.Drawing.Color.Black
-        Me.Label2.Location = New System.Drawing.Point(116, 0)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(35, 13)
-        Me.Label2.TabIndex = 17
-        Me.Label2.Text = "label2"
-        '
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(112, 175)
+        Me.Label3.Location = New System.Drawing.Point(105, 0)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(39, 13)
         Me.Label3.TabIndex = 18
         Me.Label3.Text = "Label3"
+        Me.Label3.Visible = False
         '
         'Form1
         '
@@ -163,7 +153,6 @@ Partial Class Form1
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.PictureBox3)
         Me.Controls.Add(Me.PictureBox5)
-        Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.PictureBox2)
         Me.Controls.Add(Me.PictureBox4)
         Me.Controls.Add(Me.AxWindowsMediaPlayer1)
@@ -195,6 +184,5 @@ Partial Class Form1
     Friend WithEvents PictureBox5 As PictureBox
     Friend WithEvents Label1 As Label
     Friend WithEvents Timer1 As Timer
-    Friend WithEvents Label2 As Label
     Friend WithEvents Label3 As Label
 End Class
