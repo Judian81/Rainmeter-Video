@@ -2,7 +2,7 @@
 
 Public Class Form1
     Private playstate As String
-    Private playposition As String = "0:00"
+    Private playposition As String = "0"
 
     Private Sub Form1_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
         RemoveHandler My.Application.StartupNextInstance, AddressOf Me_StartupNextInstance
@@ -20,27 +20,40 @@ Public Class Form1
 
         AxWindowsMediaPlayer1.settings.mute = True
         AxWindowsMediaPlayer1.settings.volume = 0
+        Me.AxWindowsMediaPlayer1.Visible = False
+        Me.PictureBox1.Visible = True
+        Me.PictureBox1.ImageLocation = Application.StartupPath() & "\Default.png"
+        Me.Label1.Visible = False
         Me.Timer1.Enabled = False
     End Sub
 
     Private Sub Me_StartupNextInstance(ByVal sender As Object, ByVal e As StartupNextInstanceEventArgs)
-        Dim argcount As Integer, url As String, position As Integer, videotop As Integer, videoleft As Integer, positiontemp As String, imagelocation As String, duration As String
+        Dim argcount As Integer, url As String, videotop As Integer, videoleft As Integer, imagelocation As String, duration As String
         argcount = 0
         url = ""
-        position = 0
+        duration = ""
         If e.CommandLine.Count > 0 Then
             For Each arg As String In e.CommandLine
                 argcount += 1
                 Select Case argcount
                     Case 1
+                        If arg = "" Then
+                            Exit Select
+                        End If
                         url = arg
-                        If url = "set position" Then
-                            'do not a thing
-                        ElseIf url = "sync position" Then
-                            'do not a thing
-                        ElseIf url = "sync new song" Then
-                            Timer1.Enabled = True
-                        ElseIf Strings.Right(url, 4) = ".3gp" Then
+                        If url = "foo" Then
+                            MsgBox("bar")
+                            Exit Sub
+                        End If
+                        If url = "Set Position" Then
+                            Exit Select
+                        End If
+                        If url = "No Video" Then
+                            Me.AxWindowsMediaPlayer1.Visible = False
+                            Me.AxWindowsMediaPlayer1.Ctlcontrols.stop()
+                            Exit Select
+                        End If
+                        If Strings.Right(url, 4) = ".3gp" Then
                             AxWindowsMediaPlayer1.Visible = False
                         ElseIf Strings.Right(url, 3) = ".aa" Then
                             AxWindowsMediaPlayer1.Visible = False
@@ -126,17 +139,13 @@ Public Class Form1
                             AxWindowsMediaPlayer1.Visible = False
                         ElseIf Strings.Right(url, 4) = ".cda" Then
                             AxWindowsMediaPlayer1.Visible = False
-                        ElseIf url <> "" Then
+                        Else
                             AxWindowsMediaPlayer1.Visible = True
+                            AxWindowsMediaPlayer1.URL = url
                         End If
                     Case 2
                         If arg <> "" Then
-                            positiontemp = arg
-                            If url = "set position" Then
-                                'do not a thing
-                            ElseIf positiontemp <> "0" Then
-                                position = Split(positiontemp, ":")(0) * 60 + Split(positiontemp, ":")(1)
-                            End If
+                            AxWindowsMediaPlayer1.Ctlcontrols.currentPosition = Split(arg, ":")(0) * 60 + Split(arg, ":")(1) + 1
                         End If
                     Case 3
                         If arg <> "" Then
@@ -160,53 +169,36 @@ Public Class Form1
                             Me.Height = CInt(Val(arg))
                             AxWindowsMediaPlayer1.Height = Me.Height
                         End If
+                        If url = "Set Position" Then
+                            Exit Sub
+                        End If
                     Case 7
-                        If arg = "Pause.png" And playstate = "Pause.png" Then
-                            playstate = "Pause1.png"
-                        ElseIf arg = "Pause.png" And playstate = "Pause1.png" Then
-                            playstate = "Pause.png"
-                        ElseIf arg <> "" Then
+                        If arg <> "" Then
                             playstate = arg
                         End If
                     Case 8
                         If arg <> "" Then
                             imagelocation = arg
-                            If url = "set position" Then
-                                'do not a thing
-                            ElseIf imagelocation <> "" Then
-                                Me.PictureBox1.ImageLocation = imagelocation
-                            End If
-                        Else
-                            Me.PictureBox1.ImageLocation = ""
+                            Me.PictureBox1.ImageLocation = imagelocation
+                        End If
+                        If url = "No Video" Then
+                            Exit Sub
                         End If
                     Case 9
                         If arg <> "" Then
                             duration = arg
-                            If url <> "set position" Then
-                                If duration = "0:00" Then
-                                    AxWindowsMediaPlayer1.Ctlcontrols.stop()
-                                    Me.Timer1.Enabled = False
-                                ElseIf playstate = "Play.png" Then
-                                    AxWindowsMediaPlayer1.URL = url
-                                    AxWindowsMediaPlayer1.Ctlcontrols.stop()
-                                    AxWindowsMediaPlayer1.Ctlcontrols.play()
-                                    Timer1.Enabled = True
-                                ElseIf playstate = "Stop.png" Then
-                                    AxWindowsMediaPlayer1.Ctlcontrols.stop()
-                                    Me.Timer1.Enabled = False
-                                ElseIf playstate = "Pause.png" Then
-                                    AxWindowsMediaPlayer1.Ctlcontrols.pause()
-                                ElseIf playstate = "Pause1.png" Then
-                                    AxWindowsMediaPlayer1.Ctlcontrols.currentPosition = position
-                                    AxWindowsMediaPlayer1.Ctlcontrols.play()
-                                End If
-                            End If
                         End If
-                    Case 10
-                        playposition = Split(arg, ":")(0) * 60 + Split(arg, ":")(1)
-                        AxWindowsMediaPlayer1.Ctlcontrols.currentPosition = playposition
                 End Select
             Next
+            If AxWindowsMediaPlayer1.Visible = True Then
+                If playstate = "Stop.png" Then
+                    Me.AxWindowsMediaPlayer1.Ctlcontrols.stop()
+                ElseIf playstate = "Play.png" Then
+                    Me.AxWindowsMediaPlayer1.Ctlcontrols.play()
+                ElseIf playstate = "Pause.png" Then
+                    Me.AxWindowsMediaPlayer1.Ctlcontrols.pause()
+                End If
+            End If
         End If
         If Me.WindowState = FormWindowState.Minimized Then Me.WindowState = FormWindowState.Normal
         e.BringToForeground = False
@@ -223,16 +215,12 @@ Public Class Form1
         AxWindowsMediaPlayer1.Height = Me.Height
     End Sub
 
-    Private Sub Form1_Shown(sender As Object, e As EventArgs) Handles Me.Shown
-        Me.PictureBox1.Visible = True
+    Private Sub AxWindowsMediaPlayer1_Enter(sender As Object, e As EventArgs) Handles AxWindowsMediaPlayer1.Enter
+
     End Sub
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
-        Static timerunning As Integer
-        timerunning += 1
-        If AxWindowsMediaPlayer1.Ctlcontrols.currentPosition >= 0.499 Then
-            AxWindowsMediaPlayer1.Ctlcontrols.currentPosition = AxWindowsMediaPlayer1.Ctlcontrols.currentPosition + 0.9
-            Timer1.Enabled = False
-        End If
+        Me.Label1.Text = Split(AxWindowsMediaPlayer1.Ctlcontrols.currentPosition, ",")(0)
     End Sub
+
 End Class
