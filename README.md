@@ -3,3 +3,8 @@ this comes with a music player from rainmeter. so when music clips are playing y
 
 i have compiled to project and add it to the rainmeter skin in my realse.
 if you like you can compile this project yourself. all you need is visual studio from microsoft to do so.
+
+
+https://forum.rainmeter.net/viewtopic.php?t=37499
+
+here you can find the origional post i made. :)
