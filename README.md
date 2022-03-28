@@ -8,7 +8,7 @@ https://forum.rainmeter.net/viewtopic.php?t=37499
 
 it is also the place were you can download the newest version.
 
-![video player](https://user-images.githubusercontent.com/46109964/142716999-305e9fb0-f289-4d11-b0bc-2d7be1c034ec.png)
+![video player](https://user-images.githubusercontent.com/46109964/160327472-e0c4fd6b-09ff-4a5b-99e5-57725feb4a80.png)
 
 
 still in development.
