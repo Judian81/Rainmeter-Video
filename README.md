@@ -10,5 +10,3 @@ it is also the place were you can download the newest version.
 
 ![video player](https://user-images.githubusercontent.com/46109964/160327472-e0c4fd6b-09ff-4a5b-99e5-57725feb4a80.png)
 
-
-still in development.
